@@ -38,6 +38,7 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 static int cmd_si(char *args);
+static int cmd_info(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -47,12 +48,32 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
         { "si", " dan bu zhi xing hou zanting que sheng wei 1",cmd_si },
-
+        { "info", " da yin ji cun qi" , cmd_info},
 	/* TODO: Add more commands */
 
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
+
+
+static int cmd_info(char *args){
+       char *arg = strtok(NULL," ");
+       if(strcmp(arg,"r")==0)
+        {
+           printf("eax %x\n",cpu.eax);
+           printf("ecx %x\n",cpu.ecx);
+           printf("edx %x\n",cpu.edx);
+           printf("ebx %x\n",cpu.ebx);
+           printf("esp %x\n",cpu.esp);
+           printf("ebp %x\n",cpu.ebp);
+           printf("esi %x\n",cpu.esi);
+           printf("edi %x\n",cpu.edi);
+}
+return 0;
+}
+
+
+
 static int cmd_si(char *args){
     char *arg = strtok(NULL," ");
     int i=0;
