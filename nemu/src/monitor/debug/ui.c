@@ -60,15 +60,20 @@ static int cmd_info(char *args){
        char *arg = strtok(NULL," ");
        if(strcmp(arg,"r")==0)
         {
-           printf("eax %x\n",cpu.eax);
+         /*  printf("eax %x\n",cpu.eax);
            printf("ecx %x\n",cpu.ecx);
            printf("edx %x\n",cpu.edx);
            printf("ebx %x\n",cpu.ebx);
            printf("esp %x\n",cpu.esp);
            printf("ebp %x\n",cpu.ebp);
            printf("esi %x\n",cpu.esi);
-           printf("edi %x\n",cpu.edi);
-}
+           printf("edi %x\n",cpu.edi);*/
+            int i;
+            for(i=0;i<8;i++)
+            {
+                 printf("%s %x %d\n",regsl[i],cpu.gpr[i]._32,cpu.gpr[i]._32);
+            }                                                                                                                                                                                         
+         }   
 return 0;
 }
 
