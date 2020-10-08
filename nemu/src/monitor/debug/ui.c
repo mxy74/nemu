@@ -40,6 +40,7 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
+static int cmd_p(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -51,11 +52,21 @@ static struct {
         { "si", " dan bu zhi xing hou zanting que sheng wei 1",cmd_si },
         { "info", " da yin ji cun qi" , cmd_info},
         { "x", "sao miao nei cun ",cmd_x},
+        { "p","expression evaluation",cmd_p},
 	/* TODO: Add more commands */
 
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
+static int cmd_p(char *args)
+{
+      bool success;
+      int i;
+      i=expr(args,&success);
+      printf("%d\n",i);
+      return 0;
+}
+
 
 static int cmd_x(char *args){
        char *arg1 = strtok(NULL," ");
