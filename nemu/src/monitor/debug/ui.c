@@ -62,7 +62,7 @@ static int cmd_p(char *args)
 {
       bool success;
       int i;
-      i=expr(args,&success);
+      i = expr( args, &success);
       printf("%d\n",i);
       return 0;
 }
