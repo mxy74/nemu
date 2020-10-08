@@ -199,16 +199,16 @@ uint32_t eval(int p,int q,bool *success){
             return 0;
          }
         else  if(p == q){
-           int m;
+           int n;
            if(tokens[p].type == NUM_10){
-               sscanf(tokens[p].str,"%d",&m);
+               sscanf(tokens[p].str,"%d",&n);
                *success =true;
-               return m;
+               return n;
            }
            if(tokens[p].type == NUM_16){
-               sscanf(tokens[p].str,"%x",&m);
+               sscanf(tokens[p].str,"%x",&n);
                *success =true;
-               return m;
+               return n;
            }
            if(tokens[p].type == REG){
            int i;
@@ -218,21 +218,21 @@ uint32_t eval(int p,int q,bool *success){
            const char* reg_8[8]={"al","ah","cl","ch","dl","dh","bl","bh"};
                                                                                                                                      for(i=0;i<8;i++){
                if(strcmp(tokens[p].str,reg_32[i])==0){
-                  m=cpu.gpr[i]._32;
+                  n=cpu.gpr[i]._32;
                   break;
                }
                if(strcmp(tokens[p].str,reg_16[i])==0){
-                  m=cpu.gpr[i]._16;
+                  n=cpu.gpr[i]._16;
                   break;
                }
                if(strcmp(tokens[p].str,reg_8[i])==0){
-                 m = cpu .gpr[i/2]._8[i%2];
+                 n= cpu.gpr[i/2]._8[i%2];
                  break;
                }
             }
             if(strcmp(tokens[p].str,"eip")==0)
-               m=cpu.eip;
-               return m;
+               n=cpu.eip;
+               return n;
          }
          else{
               *success = false;
@@ -254,7 +254,7 @@ uint32_t eval(int p,int q,bool *success){
                  }
               int op=dominant_operator(p,q);
               int val1 = eval(p,op-1,success);
-              int val2 = eval(op-1,q,success);
+              int val2 = eval(op+1,q,success);
               int op_type =tokens[op].type;
               switch(op_type){
                           case PLUS : return val1+val2;break;
