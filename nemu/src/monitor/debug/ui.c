@@ -58,13 +58,21 @@ static struct {
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
-static int cmd_p(char *args)
+/* static int cmd_p(char *args)
 {
       bool success;
       int i;
       i = expr( args, &success);
       printf("%d\n",i);
       return 0;
+}*/
+static int cmd_p(char *args)
+{
+	bool success;
+	int i;
+	i=expr(args,&success);
+	printf("%d\n",i);
+	return 0;
 }
 
 
