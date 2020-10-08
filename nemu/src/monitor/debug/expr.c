@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ
+	NOTYPE = 256, EQ = 257, LBRA = 258,RBRA = 259,MUL = 260,DIV = 261,PLUS = 262, SUB = 263,NEQ = 264, AND = 265, OR = 266, NOT = 267, NUM_16 = 268, NUM_10 = 269,REG = 270,MARK = 271 
 
 	/* TODO: Add more token types */
 
@@ -23,8 +23,22 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
-	{"\\+", '+'},					// plus
-	{"==", EQ}						// equal
+	{"\\+", PLUS},					// plus
+	{"==", EQ},						// equal
+        {"\\(" , LBRA},
+        {"\\)", RBRA},
+        {"\\*",MUL},
+        {"/", DIV},
+        {"-", SUB},
+        {"!=", NEQ},
+        {"&&",AND},
+        {"\\|\\|", OR},
+        {"!", NOT},
+        {"\\b0[xX][0-9a-fA-F]+\\b",NUM_16},
+        {"\\b[0-9]+\\b", NUM_10},
+        {"\\$[a-zA-Z]+",REG},
+        {"\\b[a-zA-Z_0-9]+", MARK},
+        
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -79,8 +93,42 @@ static bool make_token(char *e) {
 				 */
 
 				switch(rules[i].token_type) {
-					default: panic("please implement me");
+                                        case NUM_10 : tokens[nr_token].type=rules[i].token_type;
+                                        if(substr_len>=32) printf("NUM_10 too large");
+                                        else{
+                                             int j;
+                                             for (j = 0;j < 32;j ++)
+                                             tokens[nr_token].str[j] = '\0';
+                                             for (j =0;j <substr_len;j ++){
+                                                 tokens[nr_token].str[j] = substr_start[j];
+                                              }
+                                             }
+                                        break;
+                                        case NUM_16: tokens[nr_token].type = rules[i].token_type;
+                                        if (substr_len >=34) printf("NUM_16 too largee");
+                                        else{
+                                             int j;
+                                             for( j = 0;j < 32;j ++)
+                                                tokens[nr_token].str[j] ='\0';
+                                             for( j = 0; j < substr_len -2;j ++){
+                                                tokens[nr_token].str[j] = substr_start[j + 2];
+                                               }
+                                            }
+                                        break;
+                                        case REG:tokens[nr_token].type = rules[i].token_type;
+                                            int j;
+                                            for( j = 0;j < 32;j ++)
+                                            tokens[nr_token].str[j] = '\0';
+                                            for( j = 0; j < substr_len -1;j++)
+                                            tokens[nr_token].str[j] = substr_start[j + 1];
+                                            break;
+                                        case NOTYPE: nr_token--;break;
+
+                                             
+					default:tokens[nr_token].type = rules[i].token_type;
+                                     // panic("please implement me");
 				}
+                                nr_token++;
 
 				break;
 			}
@@ -94,6 +142,33 @@ static bool make_token(char *e) {
 
 	return true; 
 }
+
+bool kuohaojiancha(int p, int q, bool *success){
+     bool result = false;
+     int judge[40]= {0, };
+     int i;
+     int n=0;
+     for(i = p;i <= q; i ++){
+          if(tokens[i].type == LBRA || tokens[i].type == RBRA){
+             judge[n]= tokens[i].type;
+             if(n > 0 &&(judge[n] == RBRA &&judge [n-1]==LBRA)){
+                 judge[n - 1] =0;judge [n] =0;
+                 n =n-2;
+             }
+             n++;
+           }
+      }
+      if(judge[0] ==0){
+           *success = true;
+     }
+     else *success = false;
+     if(tokens[p].type == LBRA && tokens[q].type == RBRA && judge[0]==0)
+     result = true;
+     return result;
+}
+  
+
+
 
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
