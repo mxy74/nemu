@@ -168,7 +168,29 @@ bool kuohaojiancha(int p, int q, bool *success){
 }
   
 
-
+int youxianji(int p,int q){
+   int op =-1;
+   int i;
+   int nr_b=0;
+   int min_rank =4;
+   for(i = q; i >= p; i --){
+      if(tokens[i].type == RBRA) nr_b++;
+      if(tokens[i].type == LBRA) nr_b--;
+      if(nr_b == 0&& (tokens[i].type == MUL || tokens[i].type ==DIV) &&min_rank >3){
+         op=i;
+         min_rank=3;
+      }
+      if(nr_b == 0&& (tokens[i].type == PLUS || tokens[i].type == SUB) &&min_rank >2){
+         op =i;
+         min_rank = 2;
+      }
+      if(nr_b==0&&(tokens[i].type == NEQ||tokens[i].type == EQ || tokens[i].type == AND || tokens[i].type == OR)&&min_rank>1){
+       op =i;
+       min_rank =1;
+      }
+  }
+  return op;
+}
 
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
