@@ -8,7 +8,7 @@
 enum {
 	NOTYPE = 256, EQ, PLUS, LP, RP, DIVIDE, SUBTRACT, MULTIPLY, DECIMAL, NEG, HEX, REGISTER, AND, UNEQ, OR, NOT, P_Dereferenced
 
-	/* TODO: Add more token types */
+
 
 };
 
