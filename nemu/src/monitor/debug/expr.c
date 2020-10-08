@@ -269,7 +269,7 @@ uint32_t expr(char *e, bool *success) {
 tokens[i - 1].type == PLUS || tokens[i - 1].type == SUBTRACT || tokens[i - 1].type == MULTIPLY ||
  tokens[i - 1].type == DIVIDE || tokens[i - 1].type == LP)){
 			if(tokens[i].type == MULTIPLY) tokens[i].type = P_Dereferenced;
-			if(tokens[i].type == SUBTRACT) tokens[i].type = NEG;
+			if(tokens[i].type == SUBTRACT) tokens[i].type =NEG ;
 	}
 	}
 	uint32_t result = 0;
@@ -281,7 +281,6 @@ tokens[i - 1].type == PLUS || tokens[i - 1].type == SUBTRACT || tokens[i - 1].ty
 /*  enum {
 	NOTYPE = 256, EQ , LBRA ,RBRA ,MUL ,DIV ,PLUS , SUB ,NEQ , AND, OR , NOT , NUM_16 , NUM_10 ,REG,MARK ,NEG,DEREF 
 
-	
 
 };
 
@@ -300,8 +299,7 @@ static struct rule {
         {"\\*",MUL},
         {"/", DIV},
         {"-", SUB},
-        {"!=", NEQ},
-        {"&&",AND},
+        {"!=", NEQ        {"&&",AND},
         {"\\|\\|", OR},
         {"!", NOT},
         {"0[xX][0-9a-fA-F]+",NUM_16},
