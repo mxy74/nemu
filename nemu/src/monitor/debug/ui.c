@@ -52,29 +52,21 @@ static struct {
         { "si", " dan bu zhi xing hou zanting que sheng wei 1",cmd_si },
         { "info", " da yin ji cun qi" , cmd_info},
         { "x", "sao miao nei cun ",cmd_x},
-        { "p","expression evaluation",cmd_p},
+        { "p","ppp",cmd_p},
 	/* TODO: Add more commands */
 
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
-/* static int cmd_p(char *args)
-{
-      bool success;
-      int i;
-      i = expr( args, &success);
-      printf("%d\n",i);
-      return 0;
-}*/
 static int cmd_p(char *args)
-{
-	bool success;
-	int i;
-	i=expr(args,&success);
-	printf("%d\n",i);
-	return 0;
-}
-
+{uint32_t result = 0;
+	bool success = true;
+	result = expr(args,&success);
+	if(success == 0)
+	printf("Invalid expression %s\n",args);
+	else 
+        printf("result = %u\n",result);
+	return 0;}
 
 static int cmd_x(char *args){
        char *arg1 = strtok(NULL," ");
