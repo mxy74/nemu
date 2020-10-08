@@ -277,7 +277,17 @@ uint32_t expr(char *e, bool *success) {
 	}
 
 	/* TODO: Insert codes to evaluate the expression. */
-	panic("please implement me");
-	return 0;
+	int i;
+        for(i = 0;i < nr_token; i++){
+            if((tokens[i].type == MUL|| tokens[i].type ==SUB)&&(i==0||tokens[i-1].type ==PLUS||tokens[i-1].type==SUB||tokens[i-1].type==MUL||tokens[i-1].type==DIV||tokens[i-1].type==LBRA)){
+           if(tokens[i].type == MUL) tokens[i].type = DEREF;
+           if(tokens[i].type ==SUB) tokens[i].type=NEG;
+           }
+        }
+        uint32_t result =0;
+        result = eval (0,nr_token-1,success);
+ 
+    //       panic("please implement me");
+	return result;
 }
 
