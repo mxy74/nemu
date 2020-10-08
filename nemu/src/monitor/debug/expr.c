@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ = 257, LBRA = 258,RBRA = 259,MUL = 260,DIV = 261,PLUS = 262, SUB = 263,NEQ = 264, AND = 265, OR = 266, NOT = 267, NUM_16 = 268, NUM_10 = 269,REG = 270,MARK = 271 
+	NOTYPE = 256, EQ = 257, LBRA = 258,RBRA = 259,MUL = 260,DIV = 261,PLUS = 262, SUB = 263,NEQ = 264, AND = 265, OR = 266, NOT = 267, NUM_16 = 268, NUM_10 = 269,REG = 270,MARK = 271,NEG,DEREF 
 
 	/* TODO: Add more token types */
 
@@ -143,7 +143,7 @@ static bool make_token(char *e) {
 	return true; 
 }
 
-bool kuohaojiancha(int p, int q, bool *success){
+bool check_parentheses(int p, int q, bool *success){
      bool result = false;
      int judge[40]= {0, };
      int i;
@@ -168,7 +168,7 @@ bool kuohaojiancha(int p, int q, bool *success){
 }
   
 
-int youxianji(int p,int q){
+int dominant_operator(int p,int q){
    int op =-1;
    int i;
    int nr_b=0;
@@ -191,6 +191,84 @@ int youxianji(int p,int q){
   }
   return op;
 }
+
+uint32_t eval(int p,int q,bool *success){
+         if(*success == 0) return 0;
+         if(p>q){
+            *success =false;
+            return 0;
+         }
+         if(p == q){
+           int m;
+           if(tokens[p].type == NUM_10){
+               sscanf(tokens[p].str,"%d",&m);
+               *success =true;
+               return m;
+           }
+           if(tokens[p].type == NUM_16){
+               sscanf(tokens[p].str,"%x",&m);
+               *success =true;
+               return m;
+           }
+           if(tokens[p].type == REG){
+           int i;
+           *success =true;
+           const char* reg_32[8]={"eax","ecx","edx","ebx","esp","ebp","esi","edi"};
+           const char* reg_16[8]={"ax","cx","dx","bx","sp","bp","si","di"};
+           const char* reg_8[8]={"al","ah","cl","ch","dl","dh","bl","bh"};
+                                                                                                                                     for(i=0;i<8;i++){
+               if(strcmp(tokens[p].str,reg_32[i])==0){
+                  m=cpu.gpr[i]._32;
+                  break;
+               }
+               if(strcmp(tokens[p].str,reg_16[i])==0){
+                  m=cpu.gpr[i]._16;
+                  break;
+               }
+               if(strcmp(tokens[p].str,reg_8[i])==0){
+                 m = cpu .gpr[i/2]._8[i%2];
+                 break;
+               }
+            }
+            if(strcmp(tokens[p].str,"eip")==0)
+               m=cpu.eip;
+               return m;
+         }
+         else{
+              *success = false;
+              return 0;
+             }
+      }
+      else if(check_parentheses(p,q,success)==true){
+               return eval(p+1,q-1,success);
+       }
+            else{
+                 if((q-p)==1){
+                    if(tokens[p].type == NEG) return 0-eval(p+1,q,success);
+                    if(tokens[p].type == NOT) return !eval(p+1,q,success);
+                    if(tokens[p].type == DEREF) return swaddr_read(eval(p+1,q,success),4);
+                    else{
+                        *success = false;
+                        return 0;
+                     }
+                 }
+              int op=dominant_operator(p,q);
+              int val1 = eval(p,op-1,success);
+              int val2 = eval(op-1,q,success);
+              int op_type =tokens[op].type;
+              switch(op_type){
+                          case PLUS : return val1+val2;break;
+                          case SUB: return val1-val2;break;
+                          case MUL : return val1*val2;break;
+                          case DIV : return val1/val2;break;
+                          case AND : return val1&&val2;break;
+                          case OR: return val1||val2;break;
+                          case NEQ: return val1!=val2;break;
+                          case EQ: return val1== val2;break;
+                          default :assert(0);return 0;
+              }
+           }
+} 
 
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
