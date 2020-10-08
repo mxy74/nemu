@@ -145,7 +145,7 @@ static bool make_token(char *e) {
 
 bool check_parentheses(int p, int q, bool *success){
      bool result = false;
-     int judge[40]= {0, };
+     int judge[40]= {0,};
      int i;
      int n=0;
      for(i = p;i <= q; i ++){
@@ -198,7 +198,7 @@ uint32_t eval(int p,int q,bool *success){
             *success =false;
             return 0;
          }
-         if(p == q){
+        else  if(p == q){
            int m;
            if(tokens[p].type == NUM_10){
                sscanf(tokens[p].str,"%d",&m);
