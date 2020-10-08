@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ = 257, LBRA = 258,RBRA = 259,MUL = 260,DIV = 261,PLUS = 262, SUB = 263,NEQ = 264, AND = 265, OR = 266, NOT = 267, NUM_16 = 268, NUM_10 = 269,REG = 270,MARK = 271,NEG,DEREF 
+	NOTYPE = 256, EQ , LBRA ,RBRA ,MUL ,DIV ,PLUS , SUB ,NEQ , AND, OR , NOT , NUM_16 , NUM_10 ,REG,MARK ,NEG,DEREF 
 
 	/* TODO: Add more token types */
 
@@ -34,9 +34,9 @@ static struct rule {
         {"&&",AND},
         {"\\|\\|", OR},
         {"!", NOT},
-        {"\\b0[xX][0-9a-fA-F]+\\b",NUM_16},
-        {"\\b[0-9]+\\b", NUM_10},
-        {"\\$[a-zA-Z]+",REG},
+        {"0[xX][0-9a-fA-F]+",NUM_16},
+        {"[0-9]+", NUM_10},
+        {"\\$e?[a-d][xhl]|\\$e?(bp|sp|si|di)|\\$eip",REG},
         {"\\b[a-zA-Z_0-9]+", MARK},
         
 };
