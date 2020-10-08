@@ -94,7 +94,8 @@ static bool make_token(char *e) {
 
 				switch(rules[i].token_type) {
                                         case NUM_10 : tokens[nr_token].type=rules[i].token_type;
-                                        if(substr_len>=32) printf("NUM_10 too large");
+                                        if(substr_len>=32) 
+                                          printf("NUM_10 too large");
                                         else{
                                              int j;
                                              for (j = 0;j < 32;j ++)
@@ -105,7 +106,8 @@ static bool make_token(char *e) {
                                              }
                                         break;
                                         case NUM_16: tokens[nr_token].type = rules[i].token_type;
-                                        if (substr_len >=34) printf("NUM_16 too largee");
+                                        if (substr_len >=34)
+                                             printf("NUM_16 too largee");
                                         else{
                                              int j;
                                              for( j = 0;j < 32;j ++)
@@ -141,7 +143,7 @@ static bool make_token(char *e) {
 	}
 
 	return true; 
-}
+}                                                            
 
 bool check_parentheses(int p, int q, bool *success){
      bool result = false;
