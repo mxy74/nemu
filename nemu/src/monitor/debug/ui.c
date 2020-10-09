@@ -42,6 +42,7 @@ static int cmd_info(char *args);
 static int cmd_x(char *args);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
+static int cmd_b(char *args);
 static int cmd_d(char *args);
 static struct {
 	char *name;
@@ -57,6 +58,7 @@ static struct {
         { "p","ppp",cmd_p},
         { "w","dayinjianshidian",cmd_w},
         { "d","delete wp",cmd_d},
+        { "b","breakpoint",cmd_b},
 	/* TODO: Add more commands */
 
 };
@@ -73,7 +75,26 @@ static int cmd_w(char *args){
       if(!success) Assert (1,"wrong\n");
       printf ("val :%d\n",f->val);
       return 0;
-  }
+  
+}
+
+static int cmd_b(char *args){
+      
+          bool success;
+          swaddr_t addr;
+          int breakpoint_counter=0;
+          addr = expr(args+1,&success);
+          if (!success) assert(1);
+          sprintf(args,"$eip==0x%x",addr);
+          printf ("breakpoint %d in 0x%x\n",breakpoint_counter,addr);
+          WP *f;
+          f = new_wp();
+          f->val = expr(args,&success);
+          f->b=breakpoint_counter;
+          breakpoint_counter++;
+          strcpy(f->expr,args);
+          return 0;
+   }
 static int cmd_d(char *args){
         int num;
         sscanf(args,"%d",&num);
