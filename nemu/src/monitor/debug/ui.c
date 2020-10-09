@@ -130,6 +130,9 @@ static int cmd_info(char *args){
             {
                  printf("%s %x %d\n",regsl[i],cpu.gpr[i]._32,cpu.gpr[i]._32);
             }                                                                                                                                                                                         
+         }
+         else if(strcmp(arg,"w")==0){
+             info_wp();
          }   
 return 0;
 }
