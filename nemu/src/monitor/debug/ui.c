@@ -41,6 +41,8 @@ static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
 static int cmd_p(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -53,11 +55,36 @@ static struct {
         { "info", " da yin ji cun qi" , cmd_info},
         { "x", "sao miao nei cun ",cmd_x},
         { "p","ppp",cmd_p},
+        { "w","dayinjianshidian",cmd_w},
+        { "d","delete wp",cmd_d},
 	/* TODO: Add more commands */
 
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
+
+static int cmd_w(char *args){
+      WP *f;
+      bool success;
+      f=new_wp();
+      printf("wp %d:%s\n",f->NO,args);
+      f->val = expr(args,&success);
+      strcpy(f->expr,args);
+      if(!success) Assert (1,"wrong\n");
+      printf ("val :%d\n",f->val);
+      return 0;
+  }
+static int cmd_d(char *args){
+        int num;
+        sscanf(args,"%d",&num);
+        delete_wp(num);
+        return 0;
+}
+
+
+
+
+
 static int cmd_p(char *args)
 {uint32_t result = 0;
 	bool success = true;
