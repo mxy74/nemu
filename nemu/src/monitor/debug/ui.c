@@ -64,7 +64,7 @@ static struct {
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
-
+/*
 static int cmd_w(char *args){
       WP *f;
       bool success;
@@ -76,6 +76,13 @@ static int cmd_w(char *args){
       printf ("val :%d\n",f->val);
       return 0;
   
+}*/
+static int cmd_w(char *args){
+      bool success =true;
+      int init_value = expr(args,&success);
+      WP *p = new_wp(args,init_value);
+      printf("watchpoint %d: %s\n",p->NO,args);
+      return 0;
 }
 
 static int cmd_b(char *args){
