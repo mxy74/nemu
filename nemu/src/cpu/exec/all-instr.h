@@ -16,10 +16,10 @@
 #include "arith/idiv.h"
 #include "arith/div.h"
 #include "arith/cmp.h"
-#include "arith/sub.h"
-#include "arith/add.h"
-#include "arith/adc.h"
-#include "arith/sbb.h"
+//#include "arith/sub.h"
+//#include "arith/add.h"
+//#include "arith/adc.h"
+//#include "arith/sbb.h"
 
 #include "logic/and.h"
 #include "logic/or.h"
@@ -30,19 +30,19 @@
 #include "logic/shr.h"
 #include "logic/shrd.h"
 #include "logic/test.h"
-#include "logic/setcc.h"
+//#include "logic/setcc.h"
 
 #include "control/call.h"
 #include "control/ret.h"
 #include "control/jcc.h"
 #include "control/jmp.h"
 
-#include "string/rep.h"
+/*#include "string/rep.h"
 #include "string/moves.h"
 #include "string/lods.h"
 #include "string/scas.h"
 #include "string/stos.h"
-
+*/
 #include "misc/misc.h"
 
 #include "special/special.h"

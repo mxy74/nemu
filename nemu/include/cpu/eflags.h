@@ -2,7 +2,7 @@
 #define __EFLAGS_H__
 
 #include "common.h"
-void updata_eflags_pf_zf_sf(uint32_t);
+void update_eflags_pf_zf_sf(uint32_t );
 
 static inline bool check_cc_b(){
   return cpu.eflags.CF;
